@@ -268,26 +268,10 @@ export default class LineChart extends Component {
         );
 
     if (showAreas) {
-      areas = _.map(
-        chart.curves,
-        function(c, i) {
-          if (
-            (typeof showAreas === 'function' && showAreas(c, i)) ||
-            typeof showAreas === 'boolean'
-          )
-            return (
-              <Path
-                key={'areas' + i}
-                d={c.area.path.print()}
-                fillOpacity={0.5}
-                stroke="none"
-                fill={this.color(i)}
-              />
-            );
-
-          return null;
-        }.bind(this)
-      );
+      let areaOpacity = typeof(this.props.options.areaOpacity) !== 'undefined' ? this.props.options.areaOpacity : 0.5;
+      areas = _.map(chart.curves, function (c, i) {
+        return <Path key={'areas' + i} d={ c.area.path.print() } fillOpacity={areaOpacity} stroke="none" fill={ typeof(this.props.options.areaColor) !== 'undefined' ? this.props.options.areaColor : this.color(i) }/>
+      }.bind(this))
     }
 
     let textStyle = fontAdapt(options.label);
